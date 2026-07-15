@@ -382,6 +382,19 @@ export class InstallerStack extends cdk.Stack {
     let targetAcceleratorEnvVariables: { [p: string]: cdk.aws_codebuild.BuildEnvironmentVariable } = {};
     let s3EnvVariables: { [p: string]: cdk.aws_codebuild.BuildEnvironmentVariable } = {};
 
+    // set the actually allowed bound SCP's per OU and account: https://github.com/awslabs/landing-zone-accelerator-on-aws/issues/1119
+    targetAcceleratorEnvVariables = {
+      ...targetAcceleratorEnvVariables,
+      ACCELERATOR_MAX_OU_ATTACHED_SCPS: {
+        value: 10,
+        type: cdk.aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+      },
+      ACCELERATOR_MAX_ACCOUNT_ATTACHED_SCPS: {
+        value: 10,
+        type: cdk.aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+      },
+    };
+
     /**
      * `nodeVersion` configures the Node.js version for the accelerator.
      *
